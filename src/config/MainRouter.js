@@ -6,33 +6,49 @@ import Home from "../components/Home"
 import Company from "../components/Company";
 import Modal from "../components/ModalBox";
 import Details from "../components/Details"
-export default function MainRouter() {
+import User from "../components/User"
 
-  const [loggedIn,setLoggedIn] = useState(false)
+
+export default function MainRouter({ isLoggedIn, uid }) {
+
+  // const [loggedIn,setLoggedIn] = useState(false)
+  console.log("window.location.pathname***", window.location.pathname);
+
+  const currentPath = window.location.pathname.length === 1 ? "/home" : window.location.pathname;
     return (
+      
       <Router>
         <div>
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
           <Route   path="/" exact>
-          <Login/>
+          {isLoggedIn ? <Redirect to={currentPath} /> : <Login />}
           </Route>
              
              <Route path="/home">
-             <Home/>
+             {/* <Home/>
+             {isl===} */}
+             {AuthChecker(isLoggedIn,<Home/>)}
              </Route>
             
             {/* <Redirect from="/" to="/home"/> */}
             <Route path="/company">
-              <Company />
+              {/* <Company /> */}
+              {AuthChecker(isLoggedIn,<Company/>)}
             </Route> 
             <Route path="/modal">
-              <Modal />
+              {/* <Modal /> */}
+              {AuthChecker(isLoggedIn,<Modal/>)}
             </Route> 
             <Route path="/details/:slug">
-              <Details />
+              {/* <Details /> */}
+              {AuthChecker(isLoggedIn,<Details/>)}
             </Route> 
+            <Route path="/user">
+              {/* <Modal /> */}
+              {AuthChecker(isLoggedIn,<User/>)}
+            </Route>
             
             
             {/* <Redirect from="/home" to="/"/> */}
@@ -42,3 +58,6 @@ export default function MainRouter() {
     );
   }
   
+  const AuthChecker = (isLoggedIn, component) => {
+    return isLoggedIn ? component : <Redirect to="/" />;
+  };

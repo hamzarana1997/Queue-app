@@ -48,9 +48,10 @@ function Login(props) {
         });
     }
     return (
-        <div>
-            <button onClick={() => fb()}>Login</button>
-
+        <div className="login-form">
+            <div className="login-form-child">
+            <button className="login-button" onClick={() => fb()}>Signin With Facebook</button>
+            </div>
             {/* <p>{props.userloggedin ? 'true' : 'false'}</p> */}
         </div>
     )

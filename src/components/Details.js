@@ -24,11 +24,12 @@ function Details() {
     }
     const getUser = function (){
         firebase.firestore().collection("customer").where("userid","==",slug).get().then((res) => {
-            
+            const list = []
             res.forEach(doc => {
-              setTokenUser(doc.data())  
+                const customer = doc.data()
+              list.push(customer)  
             })
-            
+            setTokenUser(list)
         })
     }
     useEffect(()=>{
@@ -47,7 +48,7 @@ function Details() {
     <h3>Since:{company.since}</h3>
     <h3>Address: {company.address}</h3>
     <h3>Tokens: {company.Token}</h3>
-    {/* <p><SoldTokenModal /></p> */}
+    <p><SoldTokenModal userList={tokenUser} /></p>
     
            <h3>Certificates</h3>
 

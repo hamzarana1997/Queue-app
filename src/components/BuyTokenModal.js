@@ -44,8 +44,8 @@ const onAdd = function(){
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Token
+      <Button variant="success" onClick={handleShow}>
+        Buy Token
         </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -53,10 +53,13 @@ const onAdd = function(){
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+
+          
           {/* <input placeholder="Name of the company" onChange={(e) => { setCompName(e.target.value) }} />
           <br /> */}
           {/* <input  placeholder="since" onChange={(e)=>{setAddress(e.target.value)}}/> */}
           {/* <br /> */}
+          
           <input placeholder="Name" onChange={(e)=>{setName(e.target.value)}}/>
           <input placeholder="Email" onChange={(e)=>{setEmail(e.target.value)}}/>
           <input type="file"  onChange={(e)=>{setImage(e.target.files[0])}} />

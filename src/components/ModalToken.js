@@ -41,13 +41,13 @@ function Example() {
 
   return (
     <>
-      <Button className="ModalButtonToken" variant="primary" onClick={handleShow}>
+      <Button className="ModalButtonToken" variant="success" onClick={handleShow}>
         Add Token
         </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Add Token For Your Company</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <input placeholder="Name of the company" onChange={(e) => { setCompName(e.target.value) }} />
@@ -80,7 +80,7 @@ function Example() {
           <Button variant="secondary" onClick={handleClose}>
             Close
             </Button>
-          <Button variant="primary" onClick={onAdd}>
+          <Button variant="success" onClick={onAdd}>
             Add
             </Button>
         </Modal.Footer>

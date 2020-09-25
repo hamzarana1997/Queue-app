@@ -28,12 +28,13 @@ function Login(props) {
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
             var token = result.credential.accessToken;
 
+
             history.push("/home")
 
             // The signed-in user info.
 
             var user = result.user;
-            console.log(user)
+            console.log("asdasdsad",user)
             // ...
         }).catch(function (error) {
             // Handle Errors here.

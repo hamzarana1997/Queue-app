@@ -10,9 +10,11 @@ import ModalTitle from 'react-bootstrap/ModalTitle'
 import ModalBody from 'react-bootstrap/ModalBody'
 import ModalFooter from 'react-bootstrap/ModalFooter'
 import { addCompany } from "../config/Firebase"
-function Example() {
+function ModalBox({companyId}){
+  const cid = companyId
+  console.log("===========>",companyId)
   const onAdd = function () {
-    addCompany(compName, address, since, image)
+    addCompany(compName, address, since, image,cid)
   }
 
   const [show, setShow] = useState(false);
@@ -36,13 +38,13 @@ function Example() {
 
   return (
     <>
-      <Button className="ModalButton" variant="primary" onClick={handleShow}>
+      <Button className="ModalButton" variant="success" onClick={handleShow} style={{borderRadius:"40px"}}>
         +
         </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Add Your Company</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <input placeholder="Name of the company" onChange={(e) => { setCompName(e.target.value) }} />
@@ -75,7 +77,7 @@ function Example() {
           <Button variant="secondary" onClick={handleClose}>
             Close
             </Button>
-          <Button variant="primary" onClick={onAdd}>
+          <Button variant="success" onClick={onAdd}>
             Add
             </Button>
         </Modal.Footer>
@@ -85,4 +87,4 @@ function Example() {
 }
 
 
-export default Example;
+export default ModalBox;

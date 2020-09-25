@@ -14,11 +14,11 @@ function App() {
   useEffect(() => {
     listenAuthentication();
   }, []);
-
+console.log("dpic",isLoggedIn.pic)
   const listenAuthentication = () => {
     firebase.auth().onAuthStateChanged(function (user) {
       // setLoading(false)
-      setLoggedIn(user ? { email: user.email, uid: user.uid } : false);
+      setLoggedIn(user ? { email: user.email, uid: user.uid,name:user.displayName,pic:user.photoURL } : false);
     });
   };
   // return (
@@ -35,8 +35,16 @@ function App() {
 
     <div className="App">
       <header className="App-header">
-        {isLoggedIn && <button onClick={() => firebase.auth().signOut()} className="btn btn-danger" style={{ margin: "20px" }}>Logout</button>}
+      <div className="app-div">
+        <div className="app-div1">
+      {isLoggedIn && <h4>Welcome: {isLoggedIn.name}</h4> } 
+      </div>
+ <div>
+ {isLoggedIn && <button onClick={() => firebase.auth().signOut()} className="btn btn-danger" style={{ margin: "20px" }}>Logout</button> }
+  </div>
+  </div>
         <MainRouter isLoggedIn={isLoggedIn} uid={isLoggedIn.uid} />
+        
       </header>
     </div>
   );

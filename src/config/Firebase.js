@@ -18,6 +18,10 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 const addCustomer = function(name,email,image,userid){
+  if(name=="" || email =="" || image == ""){
+    alert("You must fill all the fields")
+  }
+  else{
   const storageRef = firebase.storage().ref(`images/${Date.now()}`); 
     storageRef.put(image).then(function (response) {
       response.ref.getDownloadURL().then(function (url) {
@@ -25,7 +29,7 @@ const addCustomer = function(name,email,image,userid){
     firebase.firestore().collection("customer").add({
       name,email,image:url,userid
     }).then(function(){
-     alert("added")
+     alert("Token Bought")
      firebase.firestore().collection("companies").doc(userid).get().then((res) => {
       
       let tk = res.data().Token
@@ -34,7 +38,7 @@ const addCustomer = function(name,email,image,userid){
       firebase.firestore().collection("companies").doc(userid).update({
         Token:tk1
       }).then(function(){
-       alert("token added")
+       
       }).catch(function(e){
         alert(e.message)
       })
@@ -45,10 +49,14 @@ const addCustomer = function(name,email,image,userid){
     })
   });
 });
-
+}
 }
 
 const addToken = function(token,slug){
+  if(token==""){
+    alert("You must fill all the fields")
+  }
+  else{
   firebase.firestore().collection("companies").doc(slug).update({
     Token:token
   }).then(function(){
@@ -57,15 +65,19 @@ const addToken = function(token,slug){
     alert(e.message)
   })
 }
-  
-  const addCompany = function(compName,address,since,image){
+}
+  const addCompany = function(compName,address,since,image,cid){
 
+    if(compName=="" || address =="" || since=="" || image == ""){
+      alert("You must fill all the fields")
+    }
+    else{
     const storageRef = firebase.storage().ref(`images/${Date.now()}`); 
     storageRef.put(image).then(function (response) {
       response.ref.getDownloadURL().then(function (url) {
 
     firebase.firestore().collection("companies").add({
-      compName,address,since,certificate:url
+      compName,address,since,certificate:url,cid
     }).then(function(){
      alert("added")
     }).catch(function(e){
@@ -73,7 +85,7 @@ const addToken = function(token,slug){
     })
   });
 });
-  
+}
   }
   
   export default firebase;

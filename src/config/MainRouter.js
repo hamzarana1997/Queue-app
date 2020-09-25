@@ -35,7 +35,7 @@ export default function MainRouter({ isLoggedIn, uid }) {
             {/* <Redirect from="/" to="/home"/> */}
             <Route path="/company">
               {/* <Company /> */}
-              {AuthChecker(isLoggedIn,<Company/>)}
+              {AuthChecker(isLoggedIn,<Company cid={uid}/>)}
             </Route> 
             <Route path="/modal">
               {/* <Modal /> */}
@@ -47,7 +47,7 @@ export default function MainRouter({ isLoggedIn, uid }) {
             </Route> 
             <Route path="/user">
               {/* <Modal /> */}
-              {AuthChecker(isLoggedIn,<User/>)}
+              {AuthChecker(isLoggedIn,<User cid={uid}/>)}
             </Route>
             
             

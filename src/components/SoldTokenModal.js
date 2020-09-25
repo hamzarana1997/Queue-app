@@ -5,8 +5,8 @@ import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 
 // import { addCompany } from "../config/Firebase"
-function Example({ userList }) {
-    const [ul, setUl] = useState([userList])
+function Example({userList}) {
+   
 
     // setUl(props.userList)
     // console.log(props.userList)
@@ -44,29 +44,33 @@ function Example({ userList }) {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Add Token
+            <Button variant="secondary" onClick={handleShow}>
+                Sold Tokens
         </Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Token Bought By</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                   
-                        {ul && ul.map(items => {
-                            return (
-                                <div>
-                                    <h4>Name: {items}</h4>
+                    
+                <ol>
+                        {userList && userList.map(items =>{
+                            return(
+                                
+                                <li>
+                                <div className="soldTokenModal" class="shadow-lg p-3 mb-5 bg-white rounded">
+                                
+                                    <h6>Name: {items.name}</h6>
+                                    <h6>Email: {items.email}</h6>
+                                    <div> <img src={items.image} style={{ width: "90px", height: "90px", marginBottom: "10px" }} /></div>
+                                    
                                 </div>
-
-
-
-
-
+                               
+                                </li>
                             )
-
                         })}
+                         </ol>
                    
                     {/* <input placeholder="Name of the company" onChange={(e) => { setCompName(e.target.value) }} />
           <br /> */}
@@ -100,9 +104,9 @@ function Example({ userList }) {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
             </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    {/* <Button variant="primary" onClick={handleClose}>
                         Add
-            </Button>
+            </Button> */}
                 </Modal.Footer>
             </Modal>
         </>

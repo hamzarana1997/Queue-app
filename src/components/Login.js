@@ -34,7 +34,7 @@ function Login(props) {
             // The signed-in user info.
 
             var user = result.user;
-            console.log("asdasdsad",user)
+            console.log("asdasdsad", user)
             // ...
         }).catch(function (error) {
             // Handle Errors here.
@@ -51,7 +51,7 @@ function Login(props) {
     return (
         <div className="login-form">
             <div className="login-form-child">
-            <button className="login-button" onClick={() => fb()}>Signin With Facebook</button>
+                <button className="login-button" onClick={() => fb()}>Signin With Facebook</button>
             </div>
             {/* <p>{props.userloggedin ? 'true' : 'false'}</p> */}
         </div>

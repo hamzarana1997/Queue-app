@@ -12,30 +12,32 @@ import ModalFooter from 'react-bootstrap/ModalFooter'
 import { addToken } from "../config/Firebase"
 import { useParams } from "react-router-dom"
 // import { addCompany } from "../config/Firebase"
-function Example() {
-    let {slug} = useParams()
-  
-  const [token,setToken] = useState("")
+function Example(props) {
+  let { slug } = useParams()
+  const date = new Date(Date.now())
+  const currentDate = date.getDate()
+
+  const [token, setToken] = useState("")
   const onAdd = function () {
-    addToken(token,slug)
+    addToken(token, slug, handleClose, props,currentDate)
   }
 
   const [show, setShow] = useState(false);
-//   const [compName, setCompName] = useState("")
-//   const [address, setAddress] = useState("")
-//   const [since, setSince] = useState("")
-//   const [image, setImage] = useState()
-//   const [map, setMap] = useState([])
+  //   const [compName, setCompName] = useState("")
+  //   const [address, setAddress] = useState("")
+  //   const [since, setSince] = useState("")
+  //   const [image, setImage] = useState()
+  //   const [map, setMap] = useState([])
 
-//   const getImage = (e) => {
-//     let file = e.target.files[0]
-//     setImage(file)
-//   }
-//   const getMap = (data) => {
-//     console.log("get map data in function", data.response.venues)
-//     setMap(data.response.venues)
+  //   const getImage = (e) => {
+  //     let file = e.target.files[0]
+  //     setImage(file)
+  //   }
+  //   const getMap = (data) => {
+  //     console.log("get map data in function", data.response.venues)
+  //     setMap(data.response.venues)
 
-//   }
+  //   }
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -54,7 +56,7 @@ function Example() {
           <br /> */}
           {/* <input  placeholder="since" onChange={(e)=>{setAddress(e.target.value)}}/> */}
           {/* <br /> */}
-          <input placeholder="Add Token" onChange={(e)=>{setToken(e.target.value)}}/>
+          <input placeholder="Add Token" onChange={(e) => { setToken(e.target.value) }} />
           {/* <br />
           <br /> */}
           {/* <input type="file" onChange={getImage} />

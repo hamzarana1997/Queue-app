@@ -5,8 +5,8 @@ import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 
 // import { addCompany } from "../config/Firebase"
-function Example({userList}) {
-   
+function Example({ userList }) {
+
 
     // setUl(props.userList)
     // console.log(props.userList)
@@ -43,7 +43,7 @@ function Example({userList}) {
     const handleShow = () => setShow(true);
 
     return (
-        <>
+        < >
             <Button variant="secondary" onClick={handleShow}>
                 Sold Tokens
         </Button>
@@ -53,25 +53,25 @@ function Example({userList}) {
                     <Modal.Title>Token Bought By</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    
-                <ol>
-                        {userList && userList.map(items =>{
-                            return(
-                                
+
+                    <ol>
+                        {userList && userList.map(items => {
+                            return (
+
                                 <li>
-                                <div className="soldTokenModal" class="shadow-lg p-3 mb-5 bg-white rounded">
-                                
-                                    <h6>Name: {items.name}</h6>
-                                    <h6>Email: {items.email}</h6>
-                                    <div> <img src={items.image} style={{ width: "90px", height: "90px", marginBottom: "10px" }} /></div>
-                                    
-                                </div>
-                               
+                                    <div className="soldTokenModal" class="shadow-lg p-3 mb-5 bg-white rounded " >
+
+                                        <h6>Name: {items.name}</h6>
+                                        <h6>Email: {items.email}</h6>
+                                        <div> <img src={items.image} style={{ width: "90px", height: "90px", marginBottom: "10px" }} /></div>
+
+                                    </div>
+
                                 </li>
                             )
                         })}
-                         </ol>
-                   
+                    </ol>
+
                     {/* <input placeholder="Name of the company" onChange={(e) => { setCompName(e.target.value) }} />
           <br /> */}
                     {/* <input  placeholder="since" onChange={(e)=>{setAddress(e.target.value)}}/> */}

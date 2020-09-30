@@ -10,12 +10,18 @@ import ModalTitle from 'react-bootstrap/ModalTitle'
 import ModalBody from 'react-bootstrap/ModalBody'
 import ModalFooter from 'react-bootstrap/ModalFooter'
 import { addCompany } from "../config/Firebase"
-function ModalBox({companyId}){
+function ModalBox({ companyId }) {
+
   const cid = companyId
-  console.log("===========>",companyId)
+  const currentToken = 0
+  const currentTokenBought = 0
+  
+  // console.log("===========>",companyId)
   const onAdd = function () {
-    addCompany(compName, address, since, image,cid)
+    addCompany(compName, address, since, image, cid, latt, lngg, handleClose, currentToken,currentTokenBought)
+
   }
+
 
   const [show, setShow] = useState(false);
   const [compName, setCompName] = useState("")
@@ -23,14 +29,20 @@ function ModalBox({companyId}){
   const [since, setSince] = useState("")
   const [image, setImage] = useState()
   const [map, setMap] = useState([])
+  const [latt, setLatt] = useState("")
+  const [lngg, setLngg] = useState("")
 
+  // console.log("longitude and latitude",latt)
+  // console.log("longitude and latitude",lngg)
   const getImage = (e) => {
     let file = e.target.files[0]
     setImage(file)
   }
-  const getMap = (data) => {
-    console.log("get map data in function", data.response.venues)
+  const getMap = (data, lat, lng) => {
+    // console.log("get map data in function", data.response.venues)
     setMap(data.response.venues)
+    setLatt(lat)
+    setLngg(lng)
 
   }
   const handleClose = () => setShow(false);
@@ -38,7 +50,7 @@ function ModalBox({companyId}){
 
   return (
     <>
-      <Button className="ModalButton" variant="success" onClick={handleShow} style={{borderRadius:"40px"}}>
+      <Button className="ModalButton" variant="success" onClick={handleShow} style={{ borderRadius: "40px", borderWidth: "6px" }}>
         +
         </Button>
 

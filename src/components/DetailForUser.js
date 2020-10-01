@@ -18,13 +18,7 @@ function Details() {
   const MyMapComponent = withScriptjs(
     withGoogleMap((props) => (
       <GoogleMap defaultZoom={18} defaultCenter={{ lat: latt, lng: lngg }}>
-        {props.isMarkerShown && (
-          <Marker
-            position={{ lat: latt, lng: lngg }}
-            //   var lat =
-            //   var lng =
-          />
-        )}
+        {props.isMarkerShown && <Marker position={{ lat: latt, lng: lngg }} />}
       </GoogleMap>
     ))
   );
@@ -36,16 +30,22 @@ function Details() {
 
   const [latt, setLatt] = useState();
   const [lngg, setLngg] = useState();
+  const date = new Date(Date.now());
+  const nowDate = date.getDate();
+  const [tokens, setTokens] = useState();
+  const [currentToken, setCurrentToken] = useState();
 
-  //   const interval =()=>{ setInterval(() => {
-  //     console.log('This will run every second!');
-  //   }, 5000);}
-  // const date = new Date(Date.now())
-  // console.log(date.getDate())
-
-  // const resetToken = function(){
-  //     firebase.firestore().collection("companies").get()
-  // }
+  const allowDisallow = function () {
+    firebase
+      .firestore()
+      .collection("companies")
+      .doc(slug)
+      .get()
+      .then(function (doc) {
+        setTokens(doc.data().Token);
+        setCurrentToken(doc.data().currentToken);
+      });
+  };
 
   const increaseCurrentToken = function () {
     firebase
@@ -76,11 +76,32 @@ function Details() {
     });
   };
 
-  // this.myInterval = setInterval(()=>{
-
-  // },5000)
-
-  // clearInterval(this.myInterval)
+  const resetToken = function () {
+    firebase
+      .firestore()
+      .collection("companies")
+      .doc(slug)
+      .get()
+      .then(function (doc) {
+        if (doc.data().currentDate != nowDate) {
+          firebase
+            .firestore()
+            .collection("companies")
+            .doc(slug)
+            .update({
+              Token: 0,
+              currentDate: 0,
+            })
+            .then(function () {
+              Swal({
+                title: "Token Reset",
+                text: "Tokens have been reset",
+                icon: "info",
+              });
+            });
+        }
+      });
+  };
 
   const getSingleCompany = function () {
     var docRef = firebase.firestore().collection("companies").doc(slug);
@@ -112,40 +133,28 @@ function Details() {
   };
 
   useEffect(() => {
-    // Notification.requestPermission()
-    const interval = setInterval(() => {
-      increaseCurrentToken();
-      //     if (Notification.permission === "granted") {
-      //         // If it's okay let's create a notification
-      //         var notification = new Notification("Hi there!");
-      //       }
-      console.log("This will run every 5 second!");
-    }, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
+    allowDisallow();
+    resetToken();
     getSingleCompany();
     getUser();
   }, []);
-  // console.log(tokenUser)
-  // console.log(company)
+
+  useEffect(() => {}, []);
+
   if (!company) {
     return <h1>loading...</h1>;
   }
   return (
     <div className="detail-div">
-      <button
-        onClick={() => {
-          history.goBack("/user");
-        }}
-      >
-        go back
-      </button>
+      <img
+        src={company.certificate}
+        style={{ width: "100%", borderRadius: "10px" }}
+      />
       <h3>Name:{company.compName}</h3>
       <h3>Since:{company.since}</h3>
+      <h3>Tokens: {company.Token}</h3>
+      <h3>Current Token: {company.currentToken}</h3>
       <h3>Address: {company.address}</h3>
-
       <MyMapComponent
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
@@ -154,24 +163,32 @@ function Details() {
         mapElement={<div style={{ height: `100%`, width: `400px` }} />}
       />
 
-      <h3>Tokens: {company.Token}</h3>
-      {/* <p><SoldTokenModal userList={tokenUser} /></p> */}
-      <h3>Current Token: {company.currentToken}</h3>
-
-      <h3>Certificates</h3>
-
-      <img src={company.certificate} />
-      <button onClick={increaseCurrentToken}>next Token</button>
-      <button onClick={sweetAlert}>Your Token</button>
+      <button
+        class="btn btn-secondary"
+        style={{ marginRight: "10px", marginTop: "5px" }}
+        onClick={increaseCurrentToken}
+      >
+        next Token
+      </button>
+      <button
+        class="btn btn-secondary"
+        style={{ marginTop: "5px" }}
+        onClick={sweetAlert}
+      >
+        Your Token
+      </button>
 
       <div>
         <p>
-          {<BuyTokenModal getU={getUser} getCo={getSingleCompany} sl={slug} />}
+          {tokens > 0 ? (
+            <BuyTokenModal getU={getUser} getCo={getSingleCompany} sl={slug} />
+          ) : (
+            <button className="ModalButtonToken" variant="success" disabled>
+              Buy Token
+            </button>
+          )}
         </p>
       </div>
-      {/* <div>
-               <ModalToken/>
-           </div> */}
     </div>
   );
 }

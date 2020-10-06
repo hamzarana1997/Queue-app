@@ -23,7 +23,7 @@ export default function MainRouter({ isLoggedIn, uid }) {
       <div>
         <Switch>
           <Route path="/" exact>
-            {isLoggedIn ? <Redirect to={currentPath} /> : <Login />}
+            {!isLoggedIn ? <Login /> : <Redirect to={currentPath} />}
           </Route>
 
           <Route path="/home">{AuthChecker(isLoggedIn, <Home />)}</Route>
@@ -39,7 +39,7 @@ export default function MainRouter({ isLoggedIn, uid }) {
             {AuthChecker(isLoggedIn, <User cid={uid} />)}
           </Route>
           <Route path="/detailforuser/:slug">
-            {AuthChecker(isLoggedIn, <DetailForUser />)}
+            {AuthChecker(isLoggedIn, <DetailForUser uid={uid}/>)}
           </Route>
         </Switch>
       </div>

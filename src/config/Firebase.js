@@ -25,7 +25,8 @@ const addCustomer = function (
   userid,
   props,
   handleClose,
-  tokenNo
+  tokenNo,
+  fbId
 ) {
   if (name == "" || email == "" || image == "") {
     Swal({
@@ -46,6 +47,7 @@ const addCustomer = function (
             image: url,
             userid,
             TokenNumber: tokenNo + 1,
+            fbId
           })
           .then(function () {
             firebase
@@ -91,8 +93,8 @@ const addCustomer = function (
   }
 };
 
-const addToken = function (token, slug, handleClose, props, currentDate) {
-  if (token == "") {
+const addToken = function (token, slug, handleClose, props, currentDate,tokenTime) {
+  if (token == "" || tokenTime =="") {
     Swal({
       title: "Error",
       text: "You must fill all the fields",
@@ -106,6 +108,7 @@ const addToken = function (token, slug, handleClose, props, currentDate) {
       .update({
         Token: +token,
         currentDate,
+        tokenTime: +tokenTime
       })
       .then(function () {
         props.getU1();

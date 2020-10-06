@@ -10,6 +10,7 @@ function Company({ cid }) {
   const history = useHistory();
   const [limit, setLimit] = useState(2);
   const [loading, setLoading] = useState(false);
+console.log("user id",cid)
 
   const addCompany = function () {
     setLoading(true);

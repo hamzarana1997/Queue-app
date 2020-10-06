@@ -18,8 +18,9 @@ function Example(props) {
   const currentDate = date.getDate();
 
   const [token, setToken] = useState("");
+  const [tokenTime, setTokenTime] = useState();
   const onAdd = function () {
-    addToken(token, slug, handleClose, props, currentDate);
+    addToken(token, slug, handleClose, props, currentDate,tokenTime);
   };
 
   const [show, setShow] = useState(false);
@@ -46,6 +47,12 @@ function Example(props) {
             placeholder="Add Token"
             onChange={(e) => {
               setToken(e.target.value);
+            }}
+          />
+          <input
+            placeholder="Token Time"
+            onChange={(e) => {
+              setTokenTime(e.target.value);
             }}
           />
         </Modal.Body>

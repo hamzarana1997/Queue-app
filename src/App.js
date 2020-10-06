@@ -4,11 +4,18 @@ import "./App.css";
 import Login from "./components/Login";
 import MainRouter from "./config/MainRouter";
 import firebase from "./config/Firebase";
+import {BarLoader,BeatLoader} from "react-spinners"
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(true);
+  const [isloading, setisloading] = useState(true);
+
   useEffect(() => {
     listenAuthentication();
+    setTimeout(()=>{
+      setisloading(false)
+    },2000)
+     
   }, []);
   console.log("dpic", isLoggedIn.pic);
   const listenAuthentication = () => {
@@ -26,9 +33,14 @@ function App() {
     });
   };
 
+  // if () {
+  //   return <h1>loading...</h1>;
+  // }
+
   return (
     <div className="App" id="main-div">
-      <header className="App-header">
+      {!isloading ? <header className="App-header">
+        {isLoggedIn&&
         <div className="app-div">
           <div className="app-div1">
             {isLoggedIn && <h4>Welcome: {isLoggedIn.name}</h4>}
@@ -45,8 +57,10 @@ function App() {
             )}
           </div>
         </div>
+        }
         <MainRouter isLoggedIn={isLoggedIn} uid={isLoggedIn.uid} />
       </header>
+       : <BeatLoader loading/>}
     </div>
   );
 }

@@ -13,8 +13,10 @@ import {
 } from "react-google-maps";
 import BuyTokenModal from "./BuyTokenModal";
 import Company from "./Company";
+import {BarLoader,BeatLoader} from "react-spinners"
+import { Alert } from "react-bootstrap";
 
-function Details() {
+function Details({uid}) {
   const MyMapComponent = withScriptjs(
     withGoogleMap((props) => (
       <GoogleMap defaultZoom={18} defaultCenter={{ lat: latt, lng: lngg }}>
@@ -33,7 +35,7 @@ function Details() {
   const date = new Date(Date.now());
   const nowDate = date.getDate();
   const [tokens, setTokens] = useState();
-  const [currentToken, setCurrentToken] = useState();
+  // const [currentTokens, setCurrentToken] = useState("");
 
   const allowDisallow = function () {
     firebase
@@ -43,7 +45,7 @@ function Details() {
       .get()
       .then(function (doc) {
         setTokens(doc.data().Token);
-        setCurrentToken(doc.data().currentToken);
+     
       });
   };
 
@@ -52,8 +54,7 @@ function Details() {
       .firestore()
       .collection("companies")
       .doc(slug)
-      .get()
-      .then(function (doc) {
+      .get().then(function (doc) {
         const ct = doc.data().currentToken + 1;
         firebase
           .firestore()
@@ -63,12 +64,16 @@ function Details() {
             currentToken: ct,
           })
           .then(function () {
-            getSingleCompany();
+          
+           
           })
           .catch(function () {});
       });
   };
   const sweetAlert = function () {
+    getUser()
+    getSingleCompany ()
+    console.log("Token No. " , company.currentTokenBought)
     Swal({
       title: "Token No. " + company.currentTokenBought,
       text: "Current Token No. " + company.currentToken,
@@ -90,31 +95,35 @@ function Details() {
             .doc(slug)
             .update({
               Token: 0,
-              currentDate: 0,
+              currentDate: nowDate,
+              currentToken:0,
+              currentTokenBought:0
             })
             .then(function () {
-              Swal({
-                title: "Token Reset",
-                text: "Tokens have been reset",
-                icon: "info",
-              });
+              // Swal({
+              //   title: "Token Reset",
+              //   text: "Tokens have been reset",
+              //   icon: "info",
+              // });
             });
         }
       });
   };
 
-  const getSingleCompany = function () {
-    var docRef = firebase.firestore().collection("companies").doc(slug);
+  const getSingleCompany = async function () {
+    var docRef = await firebase.firestore().collection("companies").doc(slug);
     docRef
-      .get()
-      .then(function (doc) {
+      .onSnapshot(function (doc) {
+      
         setCompany(doc.data());
+        // setCurrentToken(doc.data().currentToken)
         setLatt(doc.data().latitude);
         setLngg(doc.data().longitude);
+      
       })
-      .catch(function (error) {
-        alert(error);
-      });
+      // .catch(function (error) {
+      //   alert(error);
+      // });
   };
   const getUser = function () {
     firebase
@@ -131,19 +140,131 @@ function Details() {
         setTokenUser(list);
       });
   };
+ 
+
+//   function notifyMe() {
+
+    
+    
+//     if (Notification.permission !== 'granted')
+//      Notification.requestPermission();
+//     else {
+//         var notification = new Notification("");
+//      notification.onclick = function() {
+//       window.open('http://stackoverflow.com/a/13328397/1269037');
+//      };
+//     }
+   
+// }
+
+
+const ttandToken = async()=>{
+  let tt = 0
+  let totalToken = 0;
+  let cToken = 0
+    await firebase.firestore().collection("companies").doc(slug).get().then(function(doc){
+    tt = doc.data().tokenTime*1000
+    totalToken = doc.data().Token
+    
+
+  })
+  if(tt && totalToken){
+    
+       
+    const interval = setInterval(()=> {
+         
+    if (Notification.permission !== 'granted')
+    Notification.requestPermission();
+   else {
+    increaseCurrentToken()
+    // firebase.firestore().collection("companies").doc(slug).get().then(function(doc){
+    //   cToken = doc.data().currentToken
+    // })
+   firebase.firestore().collection("customer").where("fbId","==",uid).get().then(function(){
+    var notification = new Notification(`Next Customer Come after ${tt/1000} Seconds`);
+    notification.onclick = function() {
+     window.open('http://stackoverflow.com/a/13328397/1269037');
+     
+    };
+   })
+   
+      
+   }
+     },tt)
+
+     setTimeout(()=> {
+        clearInterval(interval)
+       
+     },tt*totalToken)
+     setTimeout(()=>{
+      firebase
+      .firestore()
+      .collection("companies")
+      .doc(slug)
+      .update({
+        Token: 0,
+        currentDate: nowDate,
+        currentToken: 0,
+        currentTokenBought: 0
+      })
+      Swal({
+        title: "Limit Reached",
+        text: "Tokens have been reset",
+        icon: "info",
+      });
+     },(tt*totalToken)+3000)
+  }
+ 
+}
+
+const reset = function () {
+  firebase
+  .firestore()
+  .collection("companies")
+  .doc(slug)
+  .update({
+    Token: 0,
+    currentDate: nowDate,
+    currentToken: 0,
+    currentTokenBought: 0
+  })
+}
 
   useEffect(() => {
+      console.log('Notification' , Notification)
+    Notification.requestPermission()
     allowDisallow();
     resetToken();
     getSingleCompany();
     getUser();
+    ttandToken()
+    
   }, []);
+  useEffect( () => {
+   
 
-  useEffect(() => {}, []);
+    // if(tt && tokens){
+       
+    //   const interval = setInterval(()=> {
+    //       alert('Notification')
+    //    },tt)
+
+    //    setTimeout(()=> {
+    //       clearInterval(interval)
+    //    },tt*tokens)
+    // }
+
+
+    // return () => clearInterval(interval); 
+   
+  }, []);
+ 
 
   if (!company) {
-    return <h1>loading...</h1>;
+    return <BeatLoader loading/>;
   }
+  
+ 
   return (
     <div className="detail-div">
       <img
@@ -178,10 +299,12 @@ function Details() {
         Your Token
       </button>
 
+      <button class="btn btn-secondary" style={{ marginLeft: "10px", marginTop: "5px" }} onClick={reset}>rest tokens</button>
+
       <div>
         <p>
           {tokens > 0 ? (
-            <BuyTokenModal getU={getUser} getCo={getSingleCompany} sl={slug} />
+            <BuyTokenModal getU={getUser} getCo={getSingleCompany} sl={slug} uid={uid}/>
           ) : (
             <button className="ModalButtonToken" variant="success" disabled>
               Buy Token

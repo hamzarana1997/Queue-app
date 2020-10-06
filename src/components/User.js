@@ -33,8 +33,7 @@ function User({ cid }) {
     firebase
       .firestore()
       .collection("companies")
-      .get()
-      .then((res) => {
+      .onSnapshot((res) => {
         const list = [];
         res.forEach((doc) => {
           const comp = doc.data();

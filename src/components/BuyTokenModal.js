@@ -14,11 +14,12 @@ import { useParams } from "react-router-dom";
 
 function Example(props) {
   const userid = props.sl;
-
+const fbId = props.uid;
   const onAdd = function () {
-    addCustomer(name, email, image, userid, props, handleClose, tokenNo);
+    addCustomer(name, email, image, userid, props, handleClose, tokenNo,fbId);
   };
   const [tokenNo, setTokenNo] = useState();
+  
 
   const getTokenNo = function () {
     firebase
@@ -28,6 +29,7 @@ function Example(props) {
       .get()
       .then(function (doc) {
         setTokenNo(doc.data().currentTokenBought);
+        
       });
   };
   const [show, setShow] = useState(false);
